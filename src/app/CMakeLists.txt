@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.13.0 FATAL_ERROR)
 
-project(mtg_deck_builder VERSION 0.1.0 LANGUAGES CXX)
+project(mtg_deck_builder)
 
 add_executable(${PROJECT_NAME} main.cpp)
 

@@ -1,10 +1,17 @@
 #include <iostream>
 
-using namespace std;
+#include "card_reader.h"
 
-int main()
+using namespace std;
+using namespace card_reader;
+
+int main(int argc, char** argv)
 {
-    cout << "Hello world!\n";
+    if(argc < 2)
+        return -1;
+
+    CardReader c;
+    c.readCards(argv[1]);
 
     return 0;
 }
