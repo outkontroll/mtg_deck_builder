@@ -8,7 +8,10 @@ using namespace card_reader;
 int main(int argc, char** argv)
 {
     if(argc < 2)
+    {
+        cout << "Missing argument\n";
         return -1;
+    }
 
     CardReader cardReader;
     const auto cards = cardReader.readCards(argv[1]);
