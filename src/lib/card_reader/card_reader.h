@@ -13,7 +13,7 @@ namespace card_reader {
 class CardReader
 {
 public:
-    auto readCards(std::string_view path) -> std::vector<mtg_card::Card>;
+    auto readCards(std::string_view path) const -> std::vector<mtg_card::Card>;
 };
 
 }

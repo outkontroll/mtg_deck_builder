@@ -7,7 +7,7 @@
 using namespace card_reader;
 using json = nlohmann::json;
 
-auto CardReader::readCards(std::string_view path) -> std::vector<mtg_card::Card>
+auto CardReader::readCards(std::string_view path) const -> std::vector<mtg_card::Card>
 {
     std::ifstream jsonFile{path.data()};
     if(!jsonFile.is_open())

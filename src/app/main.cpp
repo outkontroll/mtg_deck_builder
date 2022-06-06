@@ -1,28 +1,123 @@
 #include <iostream>
+#include <string>
 #include "card.h"
 #include "card_reader.h"
 
-using namespace std;
+#define IDE_PRINTER 1
+
 using namespace card_reader;
+
+class MainWindow
+{
+public:
+    MainWindow(std::vector<mtg_card::Card>&& cards);
+    void run();
+
+private:
+    void printMenu();
+    bool takeAction(char answer);
+    void printCount();
+    void printCardInfo(size_t index);
+    size_t getCardInfo();
+
+    std::vector<mtg_card::Card> cards;
+};
 
 int main(int argc, char** argv)
 {
     if(argc < 2)
     {
-        cout << "Missing argument\n";
+        std::cout << "Missing argument\n";
         return -1;
     }
 
-    CardReader cardReader;
-    const auto cards = cardReader.readCards(argv[1]);
-
-    std::cout << cards[0].name;
-    if(cards[0].manaCost)
-        std::cout << "\nMana: " << *cards[0].manaCost;
-    std::cout << "\nColors: ";
-    for(const auto& color : cards[0].colors)
-        std::cout << color << ", ";
-    std::cout << "\n";
+    MainWindow window{CardReader{}.readCards(argv[1])};
+    window.run();
 
     return 0;
+}
+
+MainWindow::MainWindow(std::vector<mtg_card::Card>&& cards)
+    : cards(std::move(cards))
+{}
+
+void MainWindow::run()
+{
+    if(cards.empty())
+    {
+        std::cout << "No cards could read" << std::endl;
+        return;
+    }
+
+    bool canQuit = false;
+    while(!canQuit)
+    {
+        printMenu();
+        char ch;
+#if IDE_PRINTER
+        ch = 'i';
+#else
+        std::cin >> ch;
+#endif
+        canQuit = takeAction(ch);
+    }
+}
+
+void MainWindow::printMenu()
+{
+    std::cout << "Options:\n";
+    std::cout << "Card count: c\n";
+    std::cout << "Print card info: i #\n";
+    std::cout << "Choose option: ";
+}
+
+bool MainWindow::takeAction(char answer)
+{
+    switch (answer) {
+    case 'c':
+        printCount();
+        return false;
+    case 'i':
+        printCardInfo(getCardInfo());
+        return true;
+    default:
+        return true;
+    }
+}
+
+void MainWindow::printCount()
+{
+    std::cout << "Card count: " << cards.size() << "\n";
+}
+
+void MainWindow::printCardInfo(size_t index)
+{
+    std::cout << "\n" << cards[index].name << "\n";
+    for(const auto type : cards[index].types)
+        std::cout << to_string(type) << " ";
+    if(cards[index].manaCost)
+        std::cout << "\nMana: " << *cards[index].manaCost;
+    std::cout << "\nConverted manacost: " << cards[index].convertedManaCost;
+    std::cout << "\nColors: ";
+    if(!cards[index].colors.empty())
+    {
+        for(const auto& color : cards[index].colors)
+            std::cout << color << ", ";
+    }
+    else
+    {
+        std::cout << "Colorless";
+    }
+    std::cout << "\n\n";
+}
+
+size_t MainWindow::getCardInfo()
+{
+    std::string index;
+#if IDE_PRINTER
+    index = "9";
+#else
+    std::cin >> index;
+#endif
+    return static_cast<size_t>(std::stoi(index));
 }
