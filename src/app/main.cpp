@@ -31,6 +31,8 @@ int main(int argc, char** argv)
         return -1;
     }
 
+    std::cout << "Reading cards from " << argv[1] << std::endl;
+
     MainWindow window{CardReader{}.readCards(argv[1])};
     window.run();
 
@@ -47,6 +49,10 @@ void MainWindow::run()
     {
         std::cout << "No cards could read" << std::endl;
         return;
+    }
+    else
+    {
+        std::cout << "Card count: " << cards.size() << std::endl;
     }
 
     bool canQuit = false;
@@ -98,24 +104,15 @@ void MainWindow::printCardInfo(size_t index)
     if(cards[index].manaCost)
         std::cout << "\nMana: " << *cards[index].manaCost;
     std::cout << "\nConverted manacost: " << cards[index].convertedManaCost;
-    std::cout << "\nColors: ";
-    if(!cards[index].colors.empty())
-    {
-        for(const auto& color : cards[index].colors)
-            std::cout << color << ", ";
-    }
-    else
-    {
-        std::cout << "Colorless";
-    }
-    std::cout << "\n\n";
+    std::cout << "\nColors: " << to_string(cards[index].colors);
+    std::cout << "\n" << std::endl;
 }
 
 size_t MainWindow::getCardInfo()
 {
     std::string index;
 #if IDE_PRINTER
-    index = "9";
+    index = "0";
 #else
     std::cin >> index;
 #endif

@@ -1,6 +1,6 @@
 #include "card_reader.h"
-#include "card.h"
 #include "cardFromJson.h"
+#include <filesystem>
 #include <fstream>
 #include <algorithm>
 
@@ -9,7 +9,8 @@ using json = nlohmann::json;
 
 auto CardReader::readCards(std::string_view path) const -> std::vector<mtg_card::Card>
 {
-    std::ifstream jsonFile{path.data()};
+    std::filesystem::path p(path);
+    std::ifstream jsonFile{p};
     if(!jsonFile.is_open())
         return {};
 
@@ -19,7 +20,7 @@ auto CardReader::readCards(std::string_view path) const -> std::vector<mtg_card:
     std::vector<mtg_card::Card> cards;
     cards.reserve(j.size());
 
-    std::transform(j.begin(), j.end(), std::back_inserter(cards), [](const nlohmann::json& card){
+    std::transform(j.begin(), j.end(), std::back_inserter(cards), [](const json& card){
         return card.get<mtg_card::Card>();
     });
 

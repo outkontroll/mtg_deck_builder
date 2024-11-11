@@ -1,13 +1,13 @@
 #include "cardFromJson.h"
 #include "card.h"
-#include <iostream>
 
-void mtg_card::to_json(nlohmann::json& j, const mtg_card::Card& c)
+using json = nlohmann::json;
+
+void mtg_card::to_json(json& /*j*/, const mtg_card::Card& /*c*/)
 {
-    j = nlohmann::json{{"name", c.name}, {"colors", c.colors}};
 }
 
-void mtg_card::from_json(const nlohmann::json& j, mtg_card::Card& c)
+void mtg_card::from_json(const json& j, mtg_card::Card& c)
 {
     j.at("name").get_to(c.name);
     j.at("convertedManaCost").get_to(c.convertedManaCost);
@@ -19,7 +19,7 @@ void mtg_card::from_json(const nlohmann::json& j, mtg_card::Card& c)
 
     for(const auto& color : j.at("colors"))
     {
-        c.colors.emplace_back(color.get<std::string>());
+        c.colors.emplace_back(color.get<mtg_card::Color>());
     }
 
     for(const auto& type : j.at("types"))
@@ -28,11 +28,11 @@ void mtg_card::from_json(const nlohmann::json& j, mtg_card::Card& c)
     }
 }
 
-void mtg_card::to_json(nlohmann::json& /*j*/, const mtg_card::Type& /*c*/)
+void mtg_card::to_json(json& /*j*/, mtg_card::Type /*t*/)
 {
 }
 
-void mtg_card::from_json(const nlohmann::json& j, mtg_card::Type& c)
+void mtg_card::from_json(const json& j, mtg_card::Type& t)
 {
     if(!j.is_string())
     {
@@ -44,5 +44,24 @@ void mtg_card::from_json(const nlohmann::json& j, mtg_card::Type& c)
     if(!type.has_value())
         throw std::runtime_error("unknown card type: " + typeString);
 
-    c = *type;
+    t = *type;
+}
+
+void mtg_card::to_json(json& /*j*/, mtg_card::Color /*c*/)
+{
+}
+
+void mtg_card::from_json(const json& j, mtg_card::Color& c)
+{
+    if(!j.is_string())
+    {
+        throw std::runtime_error("unknown type of json");
+    }
+
+    const auto colorString = j.get<std::string>();
+    const auto color = to_color(colorString);
+    if(!color.has_value())
+        throw std::runtime_error("unknown card colod: " + colorString);
+
+    c = *color;
 }

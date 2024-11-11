@@ -4,9 +4,7 @@
 #include <string_view>
 #include <vector>
 
-namespace mtg_card {
-struct Card;
-}
+#include "card.h"
 
 namespace card_reader {
 
