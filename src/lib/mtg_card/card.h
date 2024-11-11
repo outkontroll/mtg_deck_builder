@@ -13,6 +13,8 @@ struct Card
 {
     std::vector<Color> colors;
     std::vector<Type> types;
+    std::vector<std::string> subtypes;
+    std::vector<std::string> supertypes;
     std::optional<std::string> manaCost;
     std::string name;
     std::string text;

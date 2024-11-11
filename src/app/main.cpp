@@ -72,6 +72,7 @@ void MainWindow::run()
 void MainWindow::printMenu()
 {
     std::cout << "Options:\n";
+    std::cout << "Quit: q\n";
     std::cout << "Card count: c\n";
     std::cout << "Print card info: i #\n";
     std::cout << "Choose option: ";
@@ -85,6 +86,8 @@ bool MainWindow::takeAction(char answer)
         return false;
     case 'i':
         printCardInfo(getCardInfo());
+        return false;
+    case 'q':
         return true;
     default:
         return true;
@@ -98,9 +101,18 @@ void MainWindow::printCount()
 
 void MainWindow::printCardInfo(size_t index)
 {
-    std::cout << "\n" << cards[index].name << "\n";
-    for(const auto type : cards[index].types)
+    const auto& card = cards[index];
+    std::cout << "\n" << card.name << "\n";
+    for(const auto& supertype : card.supertypes)
+        std::cout << supertype << " ";
+    for(const auto type : card.types)
         std::cout << to_string(type) << " ";
+    if(!card.subtypes.empty())
+    {
+        std::cout << "- ";
+        for(const auto& subtype : cards[index].subtypes)
+            std::cout << subtype << " ";
+    }
     if(cards[index].manaCost)
         std::cout << "\nMana: " << *cards[index].manaCost;
     std::cout << "\nConverted manacost: " << cards[index].convertedManaCost;
@@ -113,7 +125,7 @@ size_t MainWindow::getCardInfo()
 {
     std::string index;
 #if IDE_PRINTER
-    index = "0";
+    index = "14";
 #else
     std::cin >> index;
 #endif

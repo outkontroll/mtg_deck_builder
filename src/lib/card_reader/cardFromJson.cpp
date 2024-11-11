@@ -31,6 +31,16 @@ void mtg_card::from_json(const json& j, mtg_card::Card& c)
     {
         c.types.emplace_back(type.get<mtg_card::Type>());
     }
+
+    for(const auto& subtype : j.at("subtypes"))
+    {
+        c.subtypes.emplace_back(subtype.get<std::string>());
+    }
+
+    for(const auto& supertype : j.at("supertypes"))
+    {
+        c.supertypes.emplace_back(supertype.get<std::string>());
+    }
 }
 
 void mtg_card::to_json(json& /*j*/, mtg_card::Type /*t*/)
