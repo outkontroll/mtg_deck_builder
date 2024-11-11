@@ -14,7 +14,8 @@ struct Card
     std::vector<Color> colors;
     std::vector<Type> types;
     std::optional<std::string> manaCost;
-    std::string name = "";
+    std::string name;
+    std::string text;
     int convertedManaCost = 0;
 };
 

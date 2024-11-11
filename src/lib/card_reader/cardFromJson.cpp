@@ -12,6 +12,11 @@ void mtg_card::from_json(const json& j, mtg_card::Card& c)
     j.at("name").get_to(c.name);
     j.at("convertedManaCost").get_to(c.convertedManaCost);
 
+    if(j.contains("text"))
+    {
+        j.at("text").get_to(c.text);
+    }
+
     if(j.contains("manaCost"))
     {
         c.manaCost = j.at("manaCost").get<std::string>();

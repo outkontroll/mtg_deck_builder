@@ -105,6 +105,7 @@ void MainWindow::printCardInfo(size_t index)
         std::cout << "\nMana: " << *cards[index].manaCost;
     std::cout << "\nConverted manacost: " << cards[index].convertedManaCost;
     std::cout << "\nColors: " << to_string(cards[index].colors);
+    std::cout << "\nText: " << cards[index].text;
     std::cout << "\n" << std::endl;
 }
 
