@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.13.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.22)
 
-project(mtg_deck_builder VERSION 0.1.0 LANGUAGES CXX)
+project(mtg_deck_builder)
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR
    CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
@@ -8,5 +8,6 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR
 endif()
 
 find_package(nlohmann_json)
+find_package(JUCE CONFIG REQUIRED)
 
 add_subdirectory(src)

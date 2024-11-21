@@ -32,6 +32,7 @@ inline constexpr auto to_string(Color color)
     case Color::Green:
         return "G";
     }
+    return "";
 }
 
 inline auto to_string(const std::vector<Color>& colors) -> std::string
