@@ -5,8 +5,15 @@ using namespace mtg::gui;
 NewGamePanel::NewGamePanel()
 {
     shadower.setOwner (this);
+
     closeButton.onClick = [this] { close(); };
-    addAndMakeVisible (closeButton);
+    addAndMakeVisible(closeButton);
+
+    gameModeClassicButton.onClick = []{};
+    addAndMakeVisible(gameModeClassicButton);
+
+    gameModeEdhButton.onClick = []{};
+    addAndMakeVisible(gameModeEdhButton);
 }
 
 void NewGamePanel::paint(juce::Graphics& g)
@@ -20,6 +27,8 @@ void NewGamePanel::resized()
                               .removeFromRight (40)
                               .reduced (5));
 
+    gameModeClassicButton.setBounds(getLocalBounds().withSizeKeepingCentre(140, 40).translated(80, 0));
+    gameModeEdhButton.setBounds(gameModeClassicButton.getBoundsInParent().translated(-160, 0));
     /*
     auto bounds = getLocalBounds();
     instructions.setBounds (bounds.removeFromBottom (30));

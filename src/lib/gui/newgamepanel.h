@@ -22,6 +22,8 @@ private:
     juce::DropShadow shadow { juce::Colour { 0x90000000 }, 12, {} };
     juce::DropShadower shadower { shadow };
     juce::TextButton closeButton { "X" };
+    juce::TextButton gameModeClassicButton { "1v1" };
+    juce::TextButton gameModeEdhButton { "Commander" };
 
     juce::Animator slideInAnimator = juce::ValueAnimatorBuilder{}
                                    .withEasing (juce::Easings::createEaseInOutCubic())
