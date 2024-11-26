@@ -1,4 +1,5 @@
 #include "app.h"
+#include "mainwindow.h"
 
 using namespace mtg;
 
@@ -7,6 +8,10 @@ namespace {
 constexpr auto appHeader = "Mtg Deck Builder";
 
 }
+
+MtgApplication::MtgApplication() = default;
+
+MtgApplication::~MtgApplication() = default;
 
 const juce::String MtgApplication::getApplicationName()
 {

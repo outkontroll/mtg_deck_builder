@@ -64,7 +64,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 target_link_libraries(${PROJECT_NAME} #GuiAppExample
     PRIVATE
         # GuiAppData            # If we'd created a binary data target, we'd link to it here
-        juce::juce_gui_extra
+        juce::juce_gui_basics
         gui::gui
     PUBLIC
         juce::juce_recommended_config_flags

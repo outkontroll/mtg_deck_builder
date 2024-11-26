@@ -1,14 +1,19 @@
 #ifndef APP_H
 #define APP_H
 
-#include "mainwindow.h"
+#include <juce_gui_basics/juce_gui_basics.h>
 
 namespace mtg {
+
+namespace gui {
+class MainWindow;
+}
 
 class MtgApplication final : public juce::JUCEApplication
 {
 public:
-    MtgApplication() = default;
+    MtgApplication();
+    ~MtgApplication() override;
 
     const juce::String getApplicationName() override;
     const juce::String getApplicationVersion() override;
