@@ -2,6 +2,10 @@
 
 using namespace mtg::gui;
 
+namespace {
+constexpr auto margin = 15;
+}
+
 NewGamePanel::NewGamePanel()
 {
     shadower.setOwner (this);
@@ -66,4 +70,28 @@ void NewGamePanel::close()
                             updater.removeAnimator (slideInAnimator);
                         });
     slideInAnimator.start();
+}
+
+auto NewGamePanel::createSlideInAnimator() -> juce::Animator
+{
+    return juce::ValueAnimatorBuilder{}
+        .withEasing (juce::Easings::createEaseInOutCubic())
+        .withOnStartReturningValueChangedCallback (
+            [this]
+            {
+                const auto width = getParentWidth() - 2 * margin;
+                const auto height = 130;
+                setBounds (-width, margin, width, height);
+                setVisible (true);
+
+                const auto limits = juce::makeAnimationLimits (-width, margin);
+
+                return [this, limits] (auto value)
+                {
+                    const auto progress = std::clamp (shouldOpen ? value : 1.0 - value, 0.0, 1.0);
+                    setTopLeftPosition (juce::roundToInt (limits.lerp ((float) progress)), margin);
+                };
+            })
+        .withDurationMs (500)
+        .build();
 }
