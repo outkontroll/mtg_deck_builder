@@ -16,26 +16,11 @@ public:
     void resized() override;
 
 private:
-    juce::TextButton startButton { "New game" };
-    bool animateForward = false;
-    juce::Animator buttonAnimator = [&]
-    {
-        return juce::ValueAnimatorBuilder{}
-            .withOnStartCallback ([this] { setVisible (true); })
-            .withValueChangedCallback ([this] (auto value)
-                                      {
-                                          const auto progress = animateForward ? value : (1.0 - value);
-                                          setAlpha (1.0f - (float) progress);
-                                      })
-            .withOnCompleteCallback ([this]
-                                    {
-                                        setVisible (! animateForward);
+    juce::Animator createButtonAnimator();
 
-                                        if (animateForward)
-                                            juce::NullCheckedInvocation::invoke (onClick);
-                                    })
-            .build();
-    }();
+    juce::TextButton newGameButton { "New game" };
+    bool animateForward = false;
+    juce::Animator buttonAnimator = createButtonAnimator();
 
     juce::VBlankAnimatorUpdater updater { this };
     std::function<void()> onClick;

@@ -13,11 +13,16 @@ NewGamePanel::NewGamePanel()
     closeButton.onClick = [this] { close(); };
     addAndMakeVisible(closeButton);
 
+    startGameButton.onClick = [this] { startGame(); };
+    addAndMakeVisible(startGameButton);
+
     gameModeClassicButton.onClick = []{};
     addAndMakeVisible(gameModeClassicButton);
 
-    gameModeEdhButton.onClick = []{};
-    addAndMakeVisible(gameModeEdhButton);
+    gameModeCommanderButton.onClick = []{};
+    addAndMakeVisible(gameModeCommanderButton);
+
+    //addChildComponent (setupComponent, 0);
 }
 
 void NewGamePanel::paint(juce::Graphics& g)
@@ -31,27 +36,12 @@ void NewGamePanel::resized()
                               .removeFromRight (40)
                               .reduced (5));
 
+    startGameButton.setBounds(getLocalBounds().removeFromBottom(40)
+                              .removeFromRight(140)
+                              .reduced(5));
+
     gameModeClassicButton.setBounds(getLocalBounds().withSizeKeepingCentre(140, 40).translated(80, 0));
-    gameModeEdhButton.setBounds(gameModeClassicButton.getBoundsInParent().translated(-160, 0));
-    /*
-    auto bounds = getLocalBounds();
-    instructions.setBounds (bounds.removeFromBottom (30));
-
-    FlexBox flexBox;
-    flexBox.flexDirection = FlexBox::Direction::row;
-    flexBox.flexWrap = FlexBox::Wrap::noWrap;
-    flexBox.justifyContent = FlexBox::JustifyContent::center;
-    flexBox.alignItems = FlexBox::AlignItems::center;
-
-    const auto height = (float) (bounds.getHeight() - 2 * margin);
-
-    flexBox.items.add (FlexItem (label).withWidth (200.0f).withHeight (height));
-
-    for (auto& c : toolComponents)
-        flexBox.items.add (FlexItem (*c).withWidth (height).withHeight (height).withMargin (margin));
-
-    flexBox.performLayout (bounds);
-    */
+    gameModeCommanderButton.setBounds(gameModeClassicButton.getBoundsInParent().translated(-160, 0));
 }
 
 void NewGamePanel::open()
@@ -72,6 +62,17 @@ void NewGamePanel::close()
     slideInAnimator.start();
 }
 
+void NewGamePanel::startGame()
+{
+    shouldOpen = false;
+    updater.addAnimator (slideInAnimator, [this]
+                        {
+                            juce::NullCheckedInvocation::invoke (onStartGame);
+                            updater.removeAnimator (slideInAnimator);
+                        });
+    slideInAnimator.start();
+}
+
 auto NewGamePanel::createSlideInAnimator() -> juce::Animator
 {
     return juce::ValueAnimatorBuilder{}
@@ -80,7 +81,7 @@ auto NewGamePanel::createSlideInAnimator() -> juce::Animator
             [this]
             {
                 const auto width = getParentWidth() - 2 * margin;
-                const auto height = 130;
+                const auto height = getParentHeight() - 2 * margin;
                 setBounds (-width, margin, width, height);
                 setVisible (true);
 
