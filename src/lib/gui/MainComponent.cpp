@@ -3,14 +3,17 @@
 using namespace mtg::gui;
 
 MainComponent::MainComponent()
-{    
-    mainMenu.setOnAnimatedClickEnd ([this]
-                                           {
-                                               newGamePanel.open();
-                                           });
+{
+    mainMenu.setOnAnimatedClickEnd ([this](){
+        newGamePanel.open();
+    });
+
     addAndMakeVisible (mainMenu);
 
     newGamePanel.onClose = [this] { mainMenu.reset(); };
+    newGamePanel.onStartGame = [] {
+        std::cout << "Start Game" << "\n";
+    };
 
     addAndMakeVisible (newGamePanel);
 

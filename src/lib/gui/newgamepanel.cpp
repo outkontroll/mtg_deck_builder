@@ -3,7 +3,10 @@
 using namespace mtg::gui;
 
 namespace {
+
 constexpr auto margin = 15;
+constexpr auto groupIdGameMode = 1;
+
 }
 
 NewGamePanel::NewGamePanel()
@@ -16,11 +19,16 @@ NewGamePanel::NewGamePanel()
     startGameButton.onClick = [this] { startGame(); };
     addAndMakeVisible(startGameButton);
 
-    gameModeClassicButton.onClick = []{};
+    gameModeClassicButton.onClick = [this]{ updateGameModeSelection(gameModeClassicButton); };
     addAndMakeVisible(gameModeClassicButton);
 
-    gameModeCommanderButton.onClick = []{};
+    gameModeCommanderButton.onClick = [this]{ updateGameModeSelection(gameModeCommanderButton); };
     addAndMakeVisible(gameModeCommanderButton);
+
+    gameModeCommanderButton.setRadioGroupId(groupIdGameMode);
+    gameModeClassicButton.setRadioGroupId(groupIdGameMode);
+
+    gameModeClassicButton.setToggleState(true, juce::NotificationType::sendNotification);
 
     //addChildComponent (setupComponent, 0);
 }
@@ -40,8 +48,8 @@ void NewGamePanel::resized()
                               .removeFromRight(140)
                               .reduced(5));
 
-    gameModeClassicButton.setBounds(getLocalBounds().withSizeKeepingCentre(140, 40).translated(80, 0));
-    gameModeCommanderButton.setBounds(gameModeClassicButton.getBoundsInParent().translated(-160, 0));
+    gameModeClassicButton.setBounds(getLocalBounds().withSizeKeepingCentre(170, 40).translated(95, 0));
+    gameModeCommanderButton.setBounds(gameModeClassicButton.getBoundsInParent().translated(-170, 0));
 }
 
 void NewGamePanel::open()
@@ -71,6 +79,29 @@ void NewGamePanel::startGame()
                             updater.removeAnimator (slideInAnimator);
                         });
     slideInAnimator.start();
+}
+
+void NewGamePanel::updateGameModeSelection(juce::ToggleButton& button)
+{
+    auto state = button.getToggleState();
+    if(state && &button == &gameModeClassicButton)
+    {
+        showClassicDecks();
+    }
+    else if(state && &button == &gameModeCommanderButton)
+    {
+        showCommanderDecks();
+    }
+}
+
+void NewGamePanel::showClassicDecks()
+{
+    std::cout << "Classic decks" << "\n";
+}
+
+void NewGamePanel::showCommanderDecks()
+{
+    std::cout << "Commander decks" << std::endl;
 }
 
 auto NewGamePanel::createSlideInAnimator() -> juce::Animator

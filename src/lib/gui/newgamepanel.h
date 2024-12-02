@@ -22,6 +22,9 @@ public:
 
 private:
     void startGame();
+    void updateGameModeSelection(juce::ToggleButton& button);
+    void showClassicDecks();
+    void showCommanderDecks();
 
     juce::Animator createSlideInAnimator();
 
@@ -29,8 +32,8 @@ private:
     juce::DropShadower shadower { shadow };
     juce::TextButton closeButton { "X" };
     juce::TextButton startGameButton { "Start Game" };
-    juce::TextButton gameModeClassicButton { "1v1" };
-    juce::TextButton gameModeCommanderButton { "Commander" };
+    juce::ToggleButton gameModeClassicButton { "1v1" };
+    juce::ToggleButton gameModeCommanderButton { "Commander" };
 
     juce::Animator slideInAnimator = createSlideInAnimator();
 
